@@ -24,13 +24,18 @@ def gameLoop():
     game_over = False
     murs = Wall(window)
 
+    # Generation des murs
+    liste_points = murs.genere_points(10)
+    murs.draw_wall(liste_points)
+
     # Boucle principale
     while not game_over:
         # Gestion des evenements
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_over = True
-        murs.draw_wall()
+
+
 
 
 gameLoop()
