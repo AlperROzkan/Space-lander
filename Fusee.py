@@ -2,13 +2,6 @@ import pygame
 from pygame.math import Vector2
 from math import *
 
-# Initialise
-pygame.init()
-
-# Variables
-# Taille fenetre
-windowW = 800
-windowH = 500
 
 class Fusee(pygame.sprite.Sprite):
     def __init__(self, pos, img, size):
@@ -32,33 +25,14 @@ class Fusee(pygame.sprite.Sprite):
         self.pos.y += speed*sin(angle)
         self.rect = self.image.get_rect(center=self.pos)
 
-def gameLoop():
-    window = pygame.display.set_mode((windowW, windowH))
-    clock = pygame.time.Clock()
-    fusee = Fusee((100, 100), "fusee.png", (60,40))
-    all_sprites = pygame.sprite.Group(fusee)
-    game_over = False
+    # Donne le point en haut a gauche
+    # EXEMPLE : fusee.donne_point_origine()[0] pour x, fusee.donne_point_origine()[1] pour y
+    def donne_point_origine(self):
+        return [self.rect.left, self.rect.top]
 
-    while not game_over:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_over = True
+    # Donne la largeur de la fusee
+    def donne_largeur(self):
+        return self.rect.width
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-            fusee.rotate(-3)
-        if keys[pygame.K_q] or keys[pygame.K_LEFT]:
-            fusee.rotate(3)
-        if keys[pygame.K_z] or keys[pygame.K_UP]:
-            fusee.avancer(3)
-
-        window.fill((0,0,0))
-        all_sprites.draw(window)
-        pygame.display.flip()
-        clock.tick(30)
-
-
-
-
-gameLoop()
-pygame.quit()
+    def donne_hauteur(self):
+        return self.rect.height
