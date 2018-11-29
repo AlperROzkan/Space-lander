@@ -54,7 +54,7 @@ def is_over(murs, fusee, tolerance):
         # Verification du point quatre
         if ((B[0] - A[0]) * (Q[1] - A[1]) - (B[1] - A[1]) * (Q[0] - A[0]) > 0 and Q[0] >= A[0] and Q[0] < B[0]):
             touche_mur = True
-    return False or touche_bord or touche_mur
+    return touche_bord or touche_mur
 
 
 # Fonction definissant le jeu
@@ -73,6 +73,16 @@ def gameLoop():
     gravityacce = 0.5 #acceleration de la gravité
     lastangle = fusee.getAngle() #garde l'angle de la fusee
     released = False #booleen pour tester si la touche est relchee
+    speedcalculrefresher = 0 #compteur
+    lastX = fusee.getX()
+    lastY = fusee.getY()
+    score = 0
+    time = 0
+    fuel = 1000
+    altitude = 0
+    vertical_speed = 0
+    horizontal_speed = 0
+
 
     # Generation des murs
     liste_points = murs.genere_points(5)
@@ -95,6 +105,7 @@ def gameLoop():
                 counter+=0.033 #+1 par seconde pcque 30 fps
             fusee.avancer(counter) #methode qui modifie la position de la fusee
             released = True #on dit que la touche peut etre relachee
+            fuel -= 0.33 #-10 fuel par sec
         elif event.type == pygame.KEYUP and released: #si la touche est relachee et quelle peut etre relachee
             lastangle = fusee.getAngle() #l'angle est sauvegarde pour l'inertie
             if (lastcounter <= counter): #si la derniere vitesse d'"inertie" est < a la vitesse actuelle (oui on peut augmanter sa vitesse en changeant d'angle et en double pressant la touche pour avancer dans certains cas :/)
@@ -102,13 +113,22 @@ def gameLoop():
             counter = 0 #la vitesse est remise à 0
             released = False #la touche n'est plus dans une position où elle peut etre relachee
 
-        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-            hud.setHudScore("Score")
-            hud.setHudTime("Time")
-            hud.setHudFuel("Fuel")
-            hud.setHudAltitude("Altitude")
-            hud.setHudVertical_speed("Vertical_speed")
-            hud.setHudHorizontal_speed("Horizontal_speed")
+        speedcalculrefresher += 0.066
+        if speedcalculrefresher >= 1: #Toute les 0.5 seconde on verifie la position actuelle par rapport à celle d'il y a 0.5 sec pour trouver une vitesse verticale et horizontale
+            horizontal_speed = abs(lastX-fusee.getX())
+            lastX = fusee.getX()
+            vertical_speed = lastY-fusee.getY()
+            lastY = fusee.getY()
+            speedcalculrefresher = 0
+        altitude = windowH - fusee.pos.y #pour le moment par rapport au bas de la fenetre
+
+
+        hud.setHudScore("Score : "+str(score))
+        hud.setHudTime("Time : "+str(int(time)))
+        hud.setHudFuel("Fuel : "+ str(int(fuel)))
+        hud.setHudAltitude("Altitude : "+str(int(altitude)))
+        hud.setHudVertical_speed("Vertical_speed : "+str(int(vertical_speed)))
+        hud.setHudHorizontal_speed("Horizontal_speed : "+str(int(horizontal_speed)))
 
 
         if (lastcounter > 0): #si la vitesse d'"inertie" est superieur a 0
@@ -116,6 +136,8 @@ def gameLoop():
             fusee.avancerbis(lastangle, lastcounter) #on actualise la position de la fusee selon l'inertie
 
         gravityacce += 0.02 #on augmente l'acceleration due a la gravite de 0.02 par tick
+        time += 0.033 #+1 par seconde pcque 30 fps
+
 
         # Gestion de la fin du jeu
         if is_over(murs, fusee,3) == True:
