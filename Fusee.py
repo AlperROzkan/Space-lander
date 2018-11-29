@@ -25,9 +25,24 @@ class Fusee(pygame.sprite.Sprite):
         self.pos.y += speed*sin(angle)
         self.rect = self.image.get_rect(center=self.pos)
 
+    def avancerbis(self, lastangle, speed): #sert pour l'inertie
+        angle = radians(-lastangle)
+        self.pos.x += speed*cos(angle)
+        self.pos.y += speed*sin(angle)
+        self.rect = self.image.get_rect(center=self.pos)
+
     def gravity(self, gravity):
         self.pos.y += gravity
         self.rect = self.image.get_rect(center=self.pos)
+
+    def getAngle(self):
+        return self.angle
+
+    def getX(self):
+        return self.pos.x
+
+    def getY(self):
+        return self.pos.y  
 
     # Donne le point en haut a gauche
     # EXEMPLE : fusee.donne_point_origine()[0] pour x, fusee.donne_point_origine()[1] pour y

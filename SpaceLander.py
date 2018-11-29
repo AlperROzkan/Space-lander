@@ -100,6 +100,22 @@ def gameLoop():
     all_sprites = pygame.sprite.Group(fusee)
     game_over = False
 
+    counter = 0 # acceleration/vitesse
+    lastcounter = 0 #acceleration sauvegarder pour l'"inertie"
+    gravityacce = 0.5 #acceleration de la gravité
+    lastangle = fusee.getAngle() #garde l'angle de la fusee
+    released = False #booleen pour tester si la touche est relchee
+    speedcalculrefresher = 0 #compteur
+    lastX = fusee.getX()
+    lastY = fusee.getY()
+    score = 0
+    time = 0
+    fuel = 1000
+    altitude = 0
+    vertical_speed = 0
+    horizontal_speed = 0
+
+
     # Generation des murs
     liste_points = murs.genere_points(5)
 
@@ -115,14 +131,44 @@ def gameLoop():
         if keys[pygame.K_q] or keys[pygame.K_LEFT]:
             fusee.rotate(10)
         if keys[pygame.K_z] or keys[pygame.K_UP]:
-            fusee.avancer(10)
-        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-            hud.setHudScore("Score")
-            hud.setHudTime("Time")
-            hud.setHudFuel("Fuel")
-            hud.setHudAltitude("Altitude")
-            hud.setHudVertical_speed("Vertical_speed")
-            hud.setHudHorizontal_speed("Horizontal_speed")
+            if (gravityacce > 0.5): #la gravite ne peut pas etre inferieur à o,5
+                gravityacce -= 0.06 #la gravite de 0.06 par tick (~30 ticks par seconde)
+            if (counter < 2):#la vitesse ne peut pas être > 2
+                counter+=0.033 #+1 par seconde pcque 30 fps
+            fusee.avancer(counter) #methode qui modifie la position de la fusee
+            released = True #on dit que la touche peut etre relachee
+            fuel -= 0.33 #-10 fuel par sec
+        elif event.type == pygame.KEYUP and released: #si la touche est relachee et quelle peut etre relachee
+            lastangle = fusee.getAngle() #l'angle est sauvegarde pour l'inertie
+            if (lastcounter <= counter): #si la derniere vitesse d'"inertie" est < a la vitesse actuelle (oui on peut augmanter sa vitesse en changeant d'angle et en double pressant la touche pour avancer dans certains cas :/)
+                lastcounter = counter #la vitesse actuelle est sauvegarder
+            counter = 0 #la vitesse est remise à 0
+            released = False #la touche n'est plus dans une position où elle peut etre relachee
+
+        speedcalculrefresher += 0.066
+        if speedcalculrefresher >= 1: #Toute les 0.5 seconde on verifie la position actuelle par rapport à celle d'il y a 0.5 sec pour trouver une vitesse verticale et horizontale
+            horizontal_speed = abs(lastX-fusee.getX())
+            lastX = fusee.getX()
+            vertical_speed = lastY-fusee.getY()
+            lastY = fusee.getY()
+            speedcalculrefresher = 0
+        altitude = windowH - fusee.pos.y #pour le moment par rapport au bas de la fenetre
+
+
+        hud.setHudScore("Score : "+str(score))
+        hud.setHudTime("Time : "+str(int(time)))
+        hud.setHudFuel("Fuel : "+ str(int(fuel)))
+        hud.setHudAltitude("Altitude : "+str(int(altitude)))
+        hud.setHudVertical_speed("Vertical_speed : "+str(int(vertical_speed)))
+        hud.setHudHorizontal_speed("Horizontal_speed : "+str(int(horizontal_speed)))
+
+
+        if (lastcounter > 0): #si la vitesse d'"inertie" est superieur a 0
+            lastcounter -= 0.015 #on la diminue
+            fusee.avancerbis(lastangle, lastcounter) #on actualise la position de la fusee selon l'inertie
+
+        gravityacce += 0.02 #on augmente l'acceleration due a la gravite de 0.02 par tick
+        time += 0.033 #+1 par seconde pcque 30 fps
 
         # Gestion de la victoire
         if gagne(murs, fusee, 0) == True:
@@ -136,14 +182,12 @@ def gameLoop():
             print("Game Over")
             game_over = True
 
-
-
         window.fill((0, 0, 0))
 
         # TODO A enlever
         pygame.draw.rect(window, white, fusee, 5)
 
-        fusee.gravity(1)
+        fusee.gravity(gravityacce)
         hud.hudDraw()
         all_sprites.draw(window)
         murs.draw_wall(liste_points)
