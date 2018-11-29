@@ -14,11 +14,6 @@ class Fusee(pygame.sprite.Sprite):
         self.pos = Vector2(pos)  # coordonne du point centre de la rotation (correspond ici au centre de l'image)
         self.angle = 0
 
-        # TODO A enlever
-        print(self.donne_point_origine())
-        print(self.donne_largeur())
-        print(self.donne_hauteur())
-
     def rotate(self, angle):
         self.angle += angle
         self.image = pygame.transform.rotate(self.orig_image, self.angle)
