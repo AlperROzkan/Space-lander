@@ -16,8 +16,6 @@ window = pygame.display.set_mode((windowW, windowH))
 # Nom de la fenetre
 pygame.display.set_caption("Space Lander")
 
-# Chargement image
-imgBalloon = pygame.image.load("Balloon.png")
 
 # Musique
 music1 = pygame.mixer_music.load("brodyquest1.mp3")
@@ -81,10 +79,18 @@ def gagne(murs, fusee, tolerance) :
         if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]==T[1] and B[1]==Q[1]:
             return True
 
+def display_message(text, fontSize, x, y):
+    font = pygame.font.Font('spacelander.TTF', fontSize)
+    img = font.render(text, True, white)
+    displayRect = img.get_rect()
+    displayRect.center = (x,y)
+    window.blit(img, displayRect)
+    pygame.display.update()
+
 # Fonction definissant le jeu
 def gameLoop():
     # Musique
-    pygame.mixer_music.play(1,0.0)
+    pygame.mixer_music.play(1,2.0)
     # Horloge
     clock = pygame.time.Clock()
     font = pygame.font.Font('spacelander.ttf',30)
@@ -121,7 +127,9 @@ def gameLoop():
         # Gestion de la victoire
         if gagne(murs, fusee, 0) == True:
             print("Gagne")
-            game_over=True
+            display_message("Gagne", 150, windowW/2, windowH/2)
+            display_message("Aller au niveau suivant", 100, windowW/2, windowH)
+            gameLoop()
 
         # Gestion de la fin du jeu
         if is_over(murs, fusee,0) == True:
