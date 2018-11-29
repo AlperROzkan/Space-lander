@@ -56,18 +56,25 @@ def is_over(murs, fusee):
         AT = [T[0]-A[0], T[1]-A[1]]
         AQ = [Q[0]-A[0], Q[1]-A[1]]
 
-        # Verification
-        if ((AB[0]*AU[1] - AB[1]*AU[0]) * (AB[0]*AD[1] - AB[1]*AD[0]))<0 :
-            #print(AB)
-            #print(AU)
-            #print(AD)
-            #print(AT)
-            #print(AQ)
-            #print((AB[0]*AU[1] - AB[1]*AU[0]) * (AB[0]*AD[1] - AB[1]*AD[0]))
+
+
+        # Verification du point un
+        if((B[0]-A[0])*(U[1]-A[1])-(B[1]-A[1])*(U[0]-A[0])>0 and U[0] >= A[0] and U[0] < B[0]) :
             touche_mur = True
 
+        # Verification du point deux
+        if((B[0]-A[0])*(D[1]-A[1])-(B[1]-A[1])*(D[0]-A[0])>0 and D[0] >= A[0] and D[0] < B[0]) :
+            touche_mur = True
 
-    return False #or touche_bord or touche_mur
+        # Verification du point trois
+        if ((B[0] - A[0]) * (T[1] - A[1]) - (B[1] - A[1]) * (T[0] - A[0]) > 0 and T[0] >= A[0] and T[0] < B[0]):
+            touche_mur = True
+
+        # Verification du point quatre
+        if ((B[0] - A[0]) * (Q[1] - A[1]) - (B[1] - A[1]) * (Q[0] - A[0]) > 0 and Q[0] >= A[0] and Q[0] < B[0]):
+            touche_mur = True
+
+    return False or touche_bord or touche_mur
 
 
 # Fonction definissant le jeu
@@ -88,6 +95,7 @@ def gameLoop():
 
     # Boucle principale
     while not game_over:
+
         # Gestion des evenements
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -116,6 +124,10 @@ def gameLoop():
             game_over = True
 
         window.fill((0, 0, 0))
+
+        # TODO A enlever
+        pygame.draw.rect(window, white, fusee, 5)
+
         fusee.gravity(1)
         hud.hudDraw()
         all_sprites.draw(window)
