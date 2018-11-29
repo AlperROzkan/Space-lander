@@ -19,7 +19,7 @@ pygame.display.set_caption("Space Lander")
 # Chargement image
 imgBalloon = pygame.image.load("Balloon.png")
 
-# Verifie si le jeu est termine
+# Verifie si il y a un game over
 # murs : Classe Wall : les murs de la partie
 # fusee : Classe Fusee : la fusee
 # tolerance : ecart accorde a la fusee
@@ -54,8 +54,29 @@ def is_over(murs, fusee, tolerance):
         # Verification du point quatre
         if ((B[0] - A[0]) * (Q[1] - A[1]) - (B[1] - A[1]) * (Q[0] - A[0]) > 0 and Q[0] >= A[0] and Q[0] < B[0]):
             touche_mur = True
+
+
+        if(gagne(murs,fusee,tolerance)==True) :
+            return False
+
     return False or touche_bord or touche_mur
 
+# Dit si jeu est gagne
+# sols : sols du jeu
+# fusee : fusee
+# RETOURNE : true si gagne
+def gagne(murs, fusee, tolerance) :
+    T = [fusee.donne_point_origine()[0] + fusee.donne_largeur() - tolerance,
+         fusee.donne_point_origine()[1] + fusee.donne_hauteur() - tolerance]
+    Q = [fusee.donne_point_origine()[0] + tolerance, fusee.donne_point_origine()[1] + fusee.donne_hauteur() - tolerance]
+    # Boucle de verification de chaque point generé
+    liste_points = murs.liste_points
+    for i in range(0, len(liste_points) - 1):
+        # Deux points du sol se suivant
+        A = [liste_points[i][0], liste_points[i][1]]
+        B = [liste_points[i + 1][0], liste_points[i + 1][1]]
+        if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]==T[1] and B[1]==Q[1]:
+            return True
 
 # Fonction definissant le jeu
 def gameLoop():
@@ -92,12 +113,17 @@ def gameLoop():
             hud.setHudVertical_speed("Vertical_speed")
             hud.setHudHorizontal_speed("Horizontal_speed")
 
+        # Gestion de la victoire
+        if gagne(murs, fusee, 0) == True:
+            print("Gagne")
+            game_over=True
 
         # Gestion de la fin du jeu
-        if is_over(murs, fusee,3) == True:
-            print("Fin du jeu")
-            print(fusee.donne_point_origine())
+        if is_over(murs, fusee,0) == True:
+            print("Game Over")
             game_over = True
+
+
 
         window.fill((0, 0, 0))
 

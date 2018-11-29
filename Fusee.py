@@ -38,5 +38,9 @@ class Fusee(pygame.sprite.Sprite):
     def donne_largeur(self):
         return self.rect.width
 
+    # Donne la hauteur de la fusee
     def donne_hauteur(self):
         return self.rect.height
+
+    def donne_angle(self):
+        return self.angle
