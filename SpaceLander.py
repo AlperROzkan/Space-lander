@@ -3,6 +3,7 @@ import time
 from Wall import *
 from Fusee import *
 from pygame.math import *
+from Hud import *
 
 # Initialise
 pygame.init()
@@ -13,6 +14,9 @@ windowH = 500
 
 # Couleurs
 black = (255,255,255)
+
+# Configurations de la fenetre
+window = pygame.display.set_mode((windowW, windowH))
 
 # Nom de la fenetre
 pygame.display.set_caption("Space Lander")
@@ -68,11 +72,12 @@ def is_over(murs, fusee):
 
 # Fonction definissant le jeu
 def gameLoop():
-    # Configurations de la fenetre
-    window = pygame.display.set_mode((windowW, windowH))
+
     # Horloge
     clock = pygame.time.Clock()
 
+    font = pygame.font.Font('spacelander.ttf',30)
+    hud = HUD((255,255,255), 10,10,window,font)
     fusee = Fusee((100, 100), "fusee.png", (60, 40))
     murs = Wall(window)
     all_sprites = pygame.sprite.Group(fusee)
@@ -95,6 +100,14 @@ def gameLoop():
             fusee.rotate(10)
         if keys[pygame.K_z] or keys[pygame.K_UP]:
             fusee.avancer(10)
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+            hud.setHudScore("Score")
+            hud.setHudTime("Time")
+            hud.setHudFuel("Fuel")
+            hud.setHudAltitude("Altitude")
+            hud.setHudVertical_speed("Vertical_speed")
+            hud.setHudHorizontal_speed("Horizontal_speed")
+
 
         # Gestion de la fin du jeu
         if is_over(murs, fusee) == True:
@@ -103,6 +116,8 @@ def gameLoop():
             game_over = True
 
         window.fill((0, 0, 0))
+        fusee.gravity(1)
+        hud.hudDraw()
         all_sprites.draw(window)
         murs.draw_wall(liste_points)
         pygame.display.flip()
