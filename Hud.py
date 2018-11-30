@@ -8,6 +8,7 @@ class HUD:
         self.hudHorizontal_speed = font.render("",True,color)
         self.hudVertical_speed = font.render("",True,color)
         self.hudnextlvl = font.render("",True,color)
+        self.hudrestart = font.render("",True,color)
 
         self.x = x
         self.y = y
@@ -31,6 +32,14 @@ class HUD:
 
         self.textNextlvl = "+100pts"
         self.textNextlvl2 = "Press SPACE to continue"
+
+        self.textrestart = "Game Over"
+        self.textrestart2 = "Score : "
+        self.textrestart3 = "Press R to restart"
+
+
+
+
 
 
     def setHudScore(self, text):
@@ -97,3 +106,19 @@ class HUD:
         self.displayRectNextlvl = self.hudnextlvl.get_rect()
         self.displayRectNextlvl.center = (x,y+30)
         self.window.blit(self.hudnextlvl, self.displayRectNextlvl)
+
+    def DrawRestart(self,x,y, text):
+        self.hudrestart = self.font.render(self.textrestart,True,(0,255,0))
+        self.displayRectrestart = self.hudrestart.get_rect()
+        self.displayRectrestart.center = (x,y)
+        self.window.blit(self.hudrestart, self.displayRectrestart)
+
+        self.hudrestart = self.font.render(self.textrestart2+text,True,(0,255,0))
+        self.displayRectrestart = self.hudrestart.get_rect()
+        self.displayRectrestart.center = (x,y+30)
+        self.window.blit(self.hudrestart, self.displayRectrestart)
+
+        self.hudrestart = self.font.render(self.textrestart3,True,(0,255,0))
+        self.displayRectrestart = self.hudrestart.get_rect()
+        self.displayRectrestart.center = (x,y+60)
+        self.window.blit(self.hudrestart, self.displayRectrestart)
