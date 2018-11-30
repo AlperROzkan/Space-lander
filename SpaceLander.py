@@ -18,7 +18,7 @@ pygame.display.set_caption("Space Lander")
 
 
 # Musique
-#music1 = pygame.mixer_music.load("brodyquest1.mp3")
+music1 = pygame.mixer_music.load("brodyquest1.ogg")
 
 # Verifie si il y a un game over
 # murs : Classe Wall : les murs de la partie
@@ -95,7 +95,7 @@ def gagne(murs, fusee, tolerance) :
 # Fonction definissant le jeu
 def gameLoop():
     # Musique
-    #pygame.mixer_music.play(1,2.0)
+    pygame.mixer_music.play(1,2.0)
     # Horloge
     clock = pygame.time.Clock()
     font = pygame.font.Font('spacelander.ttf',30)
