@@ -43,10 +43,7 @@ def is_over(murs, fusee, tolerance):
         # Deux points du sol se suivant
         A = [liste_points[i][0], liste_points[i][1]]
         B = [liste_points[i+1][0], liste_points[i+1][1]]
-
-        # Deux points en dessous des pistes d'atterissages
-        A1 = [A[0]-20, A[1]-20]
-        B1 = [B[0] - 20, B[1] - 20]
+        C = [(A[0]+B[0])/2, (A[1]+B[1])/2]
 
         # Verification du point un
         if((B[0] - A[0]) * (U[1] - A[1]) - (B[1] - A[1]) * (U[0] - A[0]) > 0 and U[0] >= A[0] and U[0] < B[0]) :
@@ -67,13 +64,9 @@ def is_over(murs, fusee, tolerance):
             else:
                 touche_mur = True
 
-
         if(gagne(murs,fusee,tolerance)==True) :
             return False
-
-    return False or touche_bord or touche_mur
-
-
+    return touche_bord or touche_mur
 
 # Dit si jeu est gagne
 # sols : sols du jeu
@@ -89,7 +82,9 @@ def gagne(murs, fusee, tolerance) :
         # Deux points du sol se suivant
         A = [liste_points[i][0], liste_points[i][1]]
         B = [liste_points[i + 1][0], liste_points[i + 1][1]]
-        if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]<=T[1] and T[0]>=A[0] and T[0]<=B[0]:
+        if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] \
+            and A[1]<=T[1] and T[0]>=A[0] and T[0]<=B[0]\
+                and A[1]<=Q[1] and Q[0]>=A[0] and Q[0]<=B[0]:
             return True
 
 # Fonction definissant le jeu
@@ -177,7 +172,9 @@ def gameLoop():
             vertical_speed = lastY-fusee.getY()
             lastY = fusee.getY()
             speedcalculrefresher = 0
-        altitude = windowH - fusee.pos.y #pour le moment par rapport au bas de la fenetre
+
+        # Gestion de l'altitude
+        altitude = windowH - fusee.getY() #pour le moment par rapport au bas de la fenetre
 
         # Affichage HUD
         hud.setHudScore("Score : "+str(score))
