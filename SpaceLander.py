@@ -125,6 +125,9 @@ def gameLoop():
     # Generation des murs
     liste_points = murs.genere_points(5)
 
+
+
+
     # Boucle principale
     while not game_over:
         # Gestion des evenements
@@ -191,6 +194,24 @@ def gameLoop():
             score = 0
             end = False
 
+
+
+        ##########################################################################
+        if not (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)+10) and (fusee.getX() < (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)-10):
+            if(fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)):
+                if (fusee.getAngle() != 180):
+                    fusee.rotate(-10)
+
+
+
+
+
+
+
+
+
+
+        ##########################################################################
 
         speedcalculrefresher += 0.066
         if speedcalculrefresher >= 1: #Toute les 0.5 seconde on verifie la position actuelle par rapport à celle d'il y a 0.5 sec pour trouver une vitesse verticale et horizontale
