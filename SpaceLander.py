@@ -18,7 +18,7 @@ pygame.display.set_caption("Space Lander")
 
 
 # Musique
-music1 = pygame.mixer_music.load("brodyquest1.mp3")
+#music1 = pygame.mixer_music.load("brodyquest1.mp3")
 
 # Verifie si il y a un game over
 # murs : Classe Wall : les murs de la partie
@@ -62,10 +62,7 @@ def is_over(murs, fusee, tolerance):
 
     return False or touche_bord or touche_mur
 
-# Booleene indiquant si on a gagné
-# Necessaire pour la continuation de la partie, en effet si on met une autre game_loop dans une game_loop, il faudra
-# perdre plusieurs fois pour quitter la partie.
-win = False
+
 
 # Dit si jeu est gagne
 # sols : sols du jeu
@@ -84,27 +81,25 @@ def gagne(murs, fusee, tolerance) :
         if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]==T[1] and T[0]>=A[0] and T[0]<=B[0]:
             return True
 
-def display_message(text, fontSize, x, y):
-    font = pygame.font.Font('spacelander.TTF', fontSize)
-    img = font.render(text, True, white)
-    displayRect = img.get_rect()
-    displayRect.center = (x,y)
-    window.blit(img, displayRect)
-    pygame.display.update()
 
 # Fonction definissant le jeu
 def gameLoop():
     # Musique
-    pygame.mixer_music.play(1,2.0)
+    #pygame.mixer_music.play(1,2.0)
     # Horloge
     clock = pygame.time.Clock()
     font = pygame.font.Font('spacelander.ttf',30)
     hud = HUD((255,255,255), 10,10,window,font)
+    game_over = False
+    score = 0
+    time = 0
+    fuel = 1000
+
+
+    win = False # Booleene indiquant si on a gagné
     fusee = Fusee((100, 100), "fusee.png", (60, 40))
     murs = Wall(window)
     all_sprites = pygame.sprite.Group(fusee)
-    game_over = False
-
     counter = 0 # acceleration/vitesse
     lastcounter = 0 #acceleration sauvegarder pour l'"inertie"
     gravityacce = 0.5 #acceleration de la gravité
@@ -113,13 +108,9 @@ def gameLoop():
     speedcalculrefresher = 0 #compteur
     lastX = fusee.getX()
     lastY = fusee.getY()
-    score = 0
-    time = 0
-    fuel = 1000
     altitude = 0
     vertical_speed = 0
     horizontal_speed = 0
-
     # Generation des murs
     liste_points = murs.genere_points(5)
 
@@ -130,11 +121,11 @@ def gameLoop():
             if event.type == pygame.QUIT:
                 game_over = True
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT] and not win:
             fusee.rotate(-10)
-        if keys[pygame.K_q] or keys[pygame.K_LEFT]:
+        if keys[pygame.K_q] or keys[pygame.K_LEFT] and not win:
             fusee.rotate(10)
-        if keys[pygame.K_z] or keys[pygame.K_UP]:
+        if keys[pygame.K_z] or keys[pygame.K_UP] and not win:
             if (gravityacce > 0.5): #la gravite ne peut pas etre inferieur à o,5
                 gravityacce -= 0.06 #la gravite de 0.06 par tick (~30 ticks par seconde)
             if (counter < 2):#la vitesse ne peut pas être > 2
@@ -142,12 +133,32 @@ def gameLoop():
             fusee.avancer(counter) #methode qui modifie la position de la fusee
             released = True #on dit que la touche peut etre relachee
             fuel -= 0.33 #-10 fuel par sec
-        elif event.type == pygame.KEYUP and released: #si la touche est relachee et quelle peut etre relachee
+        elif event.type == pygame.KEYUP and released and not win: #si la touche est relachee et quelle peut etre relachee
             lastangle = fusee.getAngle() #l'angle est sauvegarde pour l'inertie
             if (lastcounter <= counter): #si la derniere vitesse d'"inertie" est < a la vitesse actuelle (oui on peut augmanter sa vitesse en changeant d'angle et en double pressant la touche pour avancer dans certains cas :/)
                 lastcounter = counter #la vitesse actuelle est sauvegarder
             counter = 0 #la vitesse est remise à 0
             released = False #la touche n'est plus dans une position où elle peut etre relachee
+        if keys[pygame.K_SPACE] and win:
+            score += 100
+            win = False # Booleene indiquant si on a gagné
+            fusee = Fusee((100, 100), "fusee.png", (60, 40))
+            murs = Wall(window)
+            all_sprites = pygame.sprite.Group(fusee)
+            counter = 0 # acceleration/vitesse
+            lastcounter = 0 #acceleration sauvegarder pour l'"inertie"
+            gravityacce = 0.5 #acceleration de la gravité
+            lastangle = fusee.getAngle() #garde l'angle de la fusee
+            released = False #booleen pour tester si la touche est relchee
+            speedcalculrefresher = 0 #compteur
+            lastX = fusee.getX()
+            lastY = fusee.getY()
+            altitude = 0
+            vertical_speed = 0
+            horizontal_speed = 0
+            # Generation des murs
+            liste_points = murs.genere_points(5)
+
 
         speedcalculrefresher += 0.066
         if speedcalculrefresher >= 1: #Toute les 0.5 seconde on verifie la position actuelle par rapport à celle d'il y a 0.5 sec pour trouver une vitesse verticale et horizontale
@@ -158,7 +169,7 @@ def gameLoop():
             speedcalculrefresher = 0
         altitude = windowH - fusee.pos.y #pour le moment par rapport au bas de la fenetre
 
-        # Settings du HUD
+        # Affichage HUD
         hud.setHudScore("Score : "+str(score))
         hud.setHudTime("Time : "+str(int(time)))
         hud.setHudFuel("Fuel : "+ str(int(fuel)))
@@ -170,13 +181,18 @@ def gameLoop():
         if (lastcounter > 0): #si la vitesse d'"inertie" est superieur a 0
             lastcounter -= 0.015 #on la diminue
             fusee.avancerbis(lastangle, lastcounter) #on actualise la position de la fusee selon l'inertie
-
-        gravityacce += 0.02 #on augmente l'acceleration due a la gravite de 0.02 par tick
-        time += 0.033 #+1 par seconde pcque 30 fps
+        if  not win:
+            gravityacce += 0.02 #on augmente l'acceleration due a la gravite de 0.02 par tick
+            time += 0.033 #+1 par seconde pcque 30 fps
 
         # Gestion de la victoire
-        if gagne(murs, fusee, 0) == True:
+        if gagne(murs, fusee, 0) and not win:
+            fusee.gravity(0)
+            gravityacce = 0
+            fusee.avancer(0)
+            fusee.avancerbis(lastangle, 0)
             print("Gagne")
+            win = True
 
         # Gestion de la fin du jeu
         if is_over(murs, fusee,5) == True:
