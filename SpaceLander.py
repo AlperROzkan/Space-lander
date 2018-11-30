@@ -62,6 +62,11 @@ def is_over(murs, fusee, tolerance):
 
     return False or touche_bord or touche_mur
 
+# Booleene indiquant si on a gagné
+# Necessaire pour la continuation de la partie, en effet si on met une autre game_loop dans une game_loop, il faudra
+# perdre plusieurs fois pour quitter la partie.
+win = False
+
 # Dit si jeu est gagne
 # sols : sols du jeu
 # fusee : fusee
@@ -76,7 +81,7 @@ def gagne(murs, fusee, tolerance) :
         # Deux points du sol se suivant
         A = [liste_points[i][0], liste_points[i][1]]
         B = [liste_points[i + 1][0], liste_points[i + 1][1]]
-        if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]==T[1] and B[1]==Q[1]:
+        if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]==T[1] and T[0]>=A[0] and T[0]<=B[0]:
             return True
 
 def display_message(text, fontSize, x, y):
@@ -114,7 +119,6 @@ def gameLoop():
     altitude = 0
     vertical_speed = 0
     horizontal_speed = 0
-
 
     # Generation des murs
     liste_points = murs.genere_points(5)
@@ -154,7 +158,7 @@ def gameLoop():
             speedcalculrefresher = 0
         altitude = windowH - fusee.pos.y #pour le moment par rapport au bas de la fenetre
 
-
+        # Settings du HUD
         hud.setHudScore("Score : "+str(score))
         hud.setHudTime("Time : "+str(int(time)))
         hud.setHudFuel("Fuel : "+ str(int(fuel)))
@@ -173,12 +177,9 @@ def gameLoop():
         # Gestion de la victoire
         if gagne(murs, fusee, 0) == True:
             print("Gagne")
-            display_message("Gagne", 150, windowW/2, windowH/2)
-            display_message("Aller au niveau suivant", 100, windowW/2, windowH)
-            gameLoop()
 
         # Gestion de la fin du jeu
-        if is_over(murs, fusee,0) == True:
+        if is_over(murs, fusee,5) == True:
             print("Game Over")
             game_over = True
 
@@ -196,5 +197,6 @@ def gameLoop():
         pygame.display.update()
 
 gameLoop()
+
 pygame.quit()
 quit()
