@@ -7,6 +7,7 @@ class HUD:
         self.hudAltitude = font.render("",True,color)
         self.hudHorizontal_speed = font.render("",True,color)
         self.hudVertical_speed = font.render("",True,color)
+        self.hudnextlvl = font.render("",True,color)
 
         self.x = x
         self.y = y
@@ -28,13 +29,8 @@ class HUD:
         self.newHorizontal_speed = "5"
         self.newVertical_speed = "6"
 
-        self.displayRectScore = self.hudScore.get_rect()
-        self.displayRectTime = self.hudTime.get_rect()
-        self.displayRectFuel = self.hudFuel.get_rect()
-        self.displayRectAltitude = self.hudAltitude.get_rect()
-        self.displayRectHorizontal_speed = self.hudHorizontal_speed.get_rect()
-        self.displayRectVertical_speed = self.hudVertical_speed.get_rect()
-
+        self.textNextlvl = "+100pts"
+        self.textNextlvl2 = "Press SPACE to continue"
 
 
     def setHudScore(self, text):
@@ -55,46 +51,49 @@ class HUD:
     def setHudVertical_speed(self, text):
         self.newVertical_speed = text
 
-
     def hudDraw(self):
         if self.lastScore != self.newScore:
             self.hudScore = self.font.render(self.newScore,True,self.color)
-            self.displayRectScore = self.hudScore.get_rect()
             self.displayRectScore = (self.x,self.y)
             self.lastScore = self.newScore
         self.window.blit(self.hudScore, self.displayRectScore)
 
         if self.lastTime != self.newTime:
             self.hudTime = self.font.render(self.newTime,True,self.color)
-            self.displayRectTime = self.hudTime.get_rect()
             self.displayRectTime = (self.x,self.y+40)
             self.lastTime = self.newTime
         self.window.blit(self.hudTime, self.displayRectTime)
 
         if self.lastFuel != self.newFuel:
             self.hudFuel = self.font.render(self.newFuel,True,self.color)
-            self.displayRectFuel = self.hudFuel.get_rect()
             self.displayRectFuel = (self.x,self.y+80)
             self.lastFuel = self.newFuel
         self.window.blit(self.hudFuel, self.displayRectFuel)
 
         if self.lastAltitude != self.newAltitude:
             self.hudAltitude = self.font.render(self.newAltitude,True,self.color)
-            self.displayRectAltitude = self.hudAltitude.get_rect()
             self.displayRectAltitude = (self.x+250,self.y)
             self.lastAltitude = self.newAltitude
         self.window.blit(self.hudAltitude, self.displayRectAltitude)
 
         if self.lastHorizontal_speed != self.newHorizontal_speed:
             self.hudHorizontal_speed = self.font.render(self.newHorizontal_speed,True,self.color)
-            self.displayRectHorizontal_speed = self.hudHorizontal_speed.get_rect()
             self.displayRectHorizontal_speed = (self.x+250,self.y+40)
             self.lastHorizontal_speed = self.newHorizontal_speed
         self.window.blit(self.hudHorizontal_speed, self.displayRectHorizontal_speed)
 
         if self.lastVertical_speed != self.newVertical_speed:
             self.hudVertical_speed = self.font.render(self.newVertical_speed,True,self.color)
-            self.displayRectVertical_speed = self.hudVertical_speed.get_rect()
             self.displayRectVertical_speed = (self.x+250,self.y+80)
             self.lastVertical_speed = self.newVertical_speed
         self.window.blit(self.hudVertical_speed, self.displayRectVertical_speed)
+
+    def DrawNextlvl(self,x,y):
+        self.hudnextlvl = self.font.render(self.textNextlvl,True,(0,255,0))
+        self.displayRectNextlvl = self.hudnextlvl.get_rect()
+        self.displayRectNextlvl.center = (x,y)
+        self.window.blit(self.hudnextlvl, self.displayRectNextlvl)
+        self.hudnextlvl = self.font.render(self.textNextlvl2,True,(0,255,0))
+        self.displayRectNextlvl = self.hudnextlvl.get_rect()
+        self.displayRectNextlvl.center = (x,y+30)
+        self.window.blit(self.hudnextlvl, self.displayRectNextlvl)

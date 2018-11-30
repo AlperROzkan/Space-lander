@@ -70,8 +70,8 @@ def is_over(murs, fusee, tolerance):
 
         if(gagne(murs,fusee,tolerance)==True) :
             return False
-
-    return False or touche_bord or touche_mur
+    
+    return touche_bord or touche_mur
 
 
 
@@ -205,7 +205,8 @@ def gameLoop():
             win = True
 
         # Gestion de la fin du jeu
-        if is_over(murs, fusee,10) == True:
+        if is_over(murs, fusee,10):
+
             print("Game Over")
             game_over = True
 
@@ -216,6 +217,8 @@ def gameLoop():
 
         fusee.gravity(gravityacce)
         hud.hudDraw()
+        if win:
+            hud.DrawNextlvl(windowW/2, windowH/2)
         all_sprites.draw(window)
         murs.draw_wall(liste_points)
         pygame.display.flip()
