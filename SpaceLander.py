@@ -43,6 +43,11 @@ def is_over(murs, fusee, tolerance):
         # Deux points du sol se suivant
         A = [liste_points[i][0], liste_points[i][1]]
         B = [liste_points[i+1][0], liste_points[i+1][1]]
+
+        # Deux points en dessous des pistes d'atterissages
+        A1 = [A[0]-20, A[1]-20]
+        B1 = [B[0] - 20, B[1] - 20]
+
         # Verification du point un
         if((B[0] - A[0]) * (U[1] - A[1]) - (B[1] - A[1]) * (U[0] - A[0]) > 0 and U[0] >= A[0] and U[0] < B[0]) :
             touche_mur = True
@@ -51,10 +56,16 @@ def is_over(murs, fusee, tolerance):
             touche_mur = True
         # Verification du point trois
         if ((B[0] - A[0]) * (T[1] - A[1]) - (B[1] - A[1]) * (T[0] - A[0]) > 0 and T[0] >= A[0] and T[0] < B[0]):
-            touche_mur = True
+            if(fusee.donne_angle()==90 and A[1]==B[1]):
+                touche_mur=False
+            else :
+                touche_mur = True
         # Verification du point quatre
         if ((B[0] - A[0]) * (Q[1] - A[1]) - (B[1] - A[1]) * (Q[0] - A[0]) > 0 and Q[0] >= A[0] and Q[0] < B[0]):
-            touche_mur = True
+            if (fusee.donne_angle() == 90 and A[1]==B[1]):
+                touche_mur = False
+            else:
+                touche_mur = True
 
 
         if(gagne(murs,fusee,tolerance)==True) :
@@ -78,7 +89,7 @@ def gagne(murs, fusee, tolerance) :
         # Deux points du sol se suivant
         A = [liste_points[i][0], liste_points[i][1]]
         B = [liste_points[i + 1][0], liste_points[i + 1][1]]
-        if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]==T[1] and T[0]>=A[0] and T[0]<=B[0]:
+        if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]<=T[1] and T[0]>=A[0] and T[0]<=B[0]:
             return True
 
 # Fonction definissant le jeu
@@ -194,7 +205,7 @@ def gameLoop():
             win = True
 
         # Gestion de la fin du jeu
-        if is_over(murs, fusee,5) == True:
+        if is_over(murs, fusee,10) == True:
             print("Game Over")
             game_over = True
 
