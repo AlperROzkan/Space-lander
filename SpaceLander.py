@@ -84,14 +84,6 @@ def gagne(murs, fusee, tolerance) :
         if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]==T[1] and T[0]>=A[0] and T[0]<=B[0]:
             return True
 
-def display_message(text, fontSize, x, y):
-    font = pygame.font.Font('spacelander.TTF', fontSize)
-    img = font.render(text, True, white)
-    displayRect = img.get_rect()
-    displayRect.center = (x,y)
-    window.blit(img, displayRect)
-    pygame.display.update()
-
 # Fonction definissant le jeu
 def gameLoop():
     # Musique
