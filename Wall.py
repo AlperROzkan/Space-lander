@@ -43,10 +43,11 @@ class Wall:
 
             # Generation terrain plat
             proba_terrain_plat = randint(0,100)
-            if proba_terrain_plat < 10 :
+            if proba_terrain_plat < 10 or self.nb_plateforme<2:
                 largeur_restante=largeur_restante+self.largeur_atterissage
                 self.liste_points.append([largeur_restante,hauteur_mur])
                 self.liste_atterissage.append([largeur_restante,hauteur_mur])
+                self.nb_plateforme = self.nb_plateforme+1
 
         # Retour de la liste
         return self.liste_points
