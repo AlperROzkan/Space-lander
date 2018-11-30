@@ -43,7 +43,6 @@ def is_over(murs, fusee, tolerance):
         # Deux points du sol se suivant
         A = [liste_points[i][0], liste_points[i][1]]
         B = [liste_points[i+1][0], liste_points[i+1][1]]
-        C = [(A[0]+B[0])/2, (A[1]+B[1])/2]
 
         # Verification du point un
         if((B[0] - A[0]) * (U[1] - A[1]) - (B[1] - A[1]) * (U[0] - A[0]) > 0 and U[0] >= A[0] and U[0] < B[0]) :
@@ -64,11 +63,15 @@ def is_over(murs, fusee, tolerance):
             else:
                 touche_mur = True
 
+        # Verification entre les intervalles
+        # U - Q
+        if(A[1]<Q[1] and A[1]>U[1]) :
+            if(A[0]<T[0] and A[0]>Q[0]):
+                touche_mur = True
+
         if(gagne(murs,fusee,tolerance)==True) :
             return False
-
     return touche_bord or touche_mur
-
 
 # Dit si jeu est gagne
 # sols : sols du jeu
@@ -88,7 +91,6 @@ def gagne(murs, fusee, tolerance) :
             and A[1]<=T[1] and T[0]>=A[0] and T[0]<=B[0]\
                 and A[1]<=Q[1] and Q[0]>=A[0] and Q[0]<=B[0]:
             return True
-
 
 # Fonction definissant le jeu
 def gameLoop():
@@ -227,7 +229,7 @@ def gameLoop():
             win = True
 
         # Gestion de la fin du jeu
-        if (gagne(murs, fusee, 0) and vertical_speed < -20) or time <= 0 or is_over(murs, fusee,10) and not end:
+        if (gagne(murs, fusee, 0) and vertical_speed < -20) or time <= 0 or is_over(murs, fusee,0) and not end:
             fusee.gravity(0)
             gravityacce = 0
             fusee.avancer(0)
