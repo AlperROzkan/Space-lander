@@ -81,7 +81,6 @@ def gagne(murs, fusee, tolerance) :
         if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] and A[1]==T[1] and T[0]>=A[0] and T[0]<=B[0]:
             return True
 
-
 # Fonction definissant le jeu
 def gameLoop():
     # Musique
