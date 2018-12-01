@@ -38,13 +38,12 @@ class Wall:
             self.liste_points = [[0, randint(hauteur/2, hauteur)]] # commencement de la
             self.liste_atterissage = []
             self.nb_plateforme = 0
-            
+
             while largeur_restante<largeur :
                 # Generation terrain "normal"
                 largeur_restante = largeur_restante + randint(20,40)# pas
                 hauteur_mur = randint(hauteur/2, hauteur)
                 self.liste_points.append([largeur_restante,hauteur_mur])
-<<<<<<< HEAD
 
                 # Generation terrain plat
                 proba_terrain_plat = randint(0,100)
@@ -54,10 +53,6 @@ class Wall:
                     self.liste_atterissage.append([largeur_restante,hauteur_mur])
                     self.nb_plateforme = self.nb_plateforme+1
 
-=======
-                self.liste_atterissage.append([largeur_restante,hauteur_mur])
-                self.nb_plateforme = self.nb_plateforme+1
->>>>>>> da0b11d380dcee8435135c06c1fea717dcdd293e
         # Retour de la liste
         return self.liste_points
 
