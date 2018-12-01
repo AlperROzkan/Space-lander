@@ -5,7 +5,6 @@ from random import *
 white = (255,255,255)
 blue = (0, 100, 175)
 
-
 # Classe qui décrit un mur a laide de pygame.draw.lines
 class Wall:
     # Constructeur de la classe
@@ -45,6 +44,7 @@ class Wall:
                 largeur_restante = largeur_restante + randint(20,40)# pas
                 hauteur_mur = randint(hauteur/2, hauteur)
                 self.liste_points.append([largeur_restante,hauteur_mur])
+<<<<<<< HEAD
 
                 # Generation terrain plat
                 proba_terrain_plat = randint(0,100)
@@ -54,6 +54,10 @@ class Wall:
                     self.liste_atterissage.append([largeur_restante,hauteur_mur])
                     self.nb_plateforme = self.nb_plateforme+1
 
+=======
+                self.liste_atterissage.append([largeur_restante,hauteur_mur])
+                self.nb_plateforme = self.nb_plateforme+1
+>>>>>>> da0b11d380dcee8435135c06c1fea717dcdd293e
         # Retour de la liste
         return self.liste_points
 
