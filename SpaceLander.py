@@ -52,13 +52,15 @@ def is_over(murs, fusee, tolerance):
             touche_mur = True
         # Verification du point trois
         if ((B[0] - A[0]) * (T[1] - A[1]) - (B[1] - A[1]) * (T[0] - A[0]) > 0 and T[0] >= A[0] and T[0] < B[0]):
-            if(fusee.donne_angle()==90 and A[1]==B[1]):
+            if(fusee.donne_angle()==90 and A[1]==B[1] and T[1]==A[1] and T[1]==B[1] and T[0]>=A[0] and T[0]+10==B[0]\
+                    and Q[1]==A[1] and Q[1] == B[1] and Q[0]-10>=A[0] and Q[0]<=B[0]):
                 touche_mur=False
             else :
                 touche_mur = True
         # Verification du point quatre
         if ((B[0] - A[0]) * (Q[1] - A[1]) - (B[1] - A[1]) * (Q[0] - A[0]) > 0 and Q[0] >= A[0] and Q[0] < B[0]):
-            if (fusee.donne_angle() == 90 and A[1]==B[1]):
+            if (fusee.donne_angle() == 90 and A[1]==B[1] and Q[1]==A[1] and Q[1] == B[1] and Q[0]-10>=A[0] and Q[0]<=B[0] \
+                    and T[1] == A[1] and T[1] == B[1] and T[0] >= A[0] and T[0] + 10 == B[0]):
                 touche_mur = False
             else:
                 touche_mur = True
@@ -68,9 +70,6 @@ def is_over(murs, fusee, tolerance):
         if(A[1]<Q[1] and A[1]>U[1]) :
             if(A[0]<T[0] and A[0]>Q[0]):
                 touche_mur = True
-
-        if(gagne(murs,fusee,tolerance)==True) :
-            return False
     return touche_bord or touche_mur
 
 # Dit si jeu est gagne
@@ -95,7 +94,7 @@ def gagne(murs, fusee, tolerance) :
 # Fonction definissant le jeu
 def gameLoop():
     # Musique
-    pygame.mixer_music.play(1,2.0)
+    pygame.mixer_music.play(2,0)
     # Horloge
     clock = pygame.time.Clock()
     font = pygame.font.Font('spacelander.ttf',30)
@@ -123,10 +122,7 @@ def gameLoop():
     vertical_speed = 0
     horizontal_speed = 0
     # Generation des murs
-    liste_points = murs.genere_points(5)
-
-
-
+    liste_points = murs.genere_points([20,40])
 
     # Boucle principale
     while not game_over:
@@ -188,12 +184,12 @@ def gameLoop():
             vertical_speed = 0
             horizontal_speed = 0
             # Generation des murs
-            liste_points = murs.genere_points(5)
+            liste_points = murs.genere_points([20, 40])
             fuel = 1000
             time = 300
             score = 0
             end = False
-            pygame.mixer_music.play(1,2.0)
+
 
         ###########################################################################
             #Uncomment if you want autoplay
@@ -289,7 +285,7 @@ def gameLoop():
             win = True
 
         # Gestion de la fin du jeu
-        if (gagne(murs, fusee, 0) and vertical_speed < -20) or time <= 0 or is_over(murs, fusee,0) and not end:
+        if (gagne(murs, fusee, 0) and vertical_speed < -20) or time <= 0 or is_over(murs, fusee,17) and not end:
             fusee.gravity(0)
             gravityacce = 0
             fusee.avancer(0)
@@ -301,7 +297,7 @@ def gameLoop():
         window.fill((0, 0, 0))
 
         # TODO A enlever
-        pygame.draw.rect(window, white, fusee, 5)
+        #pygame.draw.rect(window, white, fusee, 5)
 
         fusee.gravity(gravityacce)
         hud.hudDraw()
@@ -316,6 +312,6 @@ def gameLoop():
         pygame.display.update()
 
 gameLoop()
-
+pygame.mixer_music.stop()
 pygame.quit()
 quit()

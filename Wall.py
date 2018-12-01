@@ -31,6 +31,8 @@ class Wall:
         hauteur = self.window.get_height()
         largeur = self.window.get_width()
 
+        nouvpas = randint(pas[0],pas[1])
+
         while  self.nb_plateforme < 2 :
 
             # Boucle generant les points
@@ -41,7 +43,7 @@ class Wall:
 
             while largeur_restante<largeur :
                 # Generation terrain "normal"
-                largeur_restante = largeur_restante + randint(20,40)# pas
+                largeur_restante = largeur_restante + nouvpas# pas
                 hauteur_mur = randint(hauteur/2, hauteur)
                 self.liste_points.append([largeur_restante,hauteur_mur])
 
