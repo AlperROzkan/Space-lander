@@ -91,6 +91,8 @@ def gagne(murs, fusee, tolerance) :
             and A[1]<=T[1] and T[0]>=A[0] and T[0]<=B[0]\
                 and A[1]<=Q[1] and Q[0]>=A[0] and Q[0]<=B[0]:
             return True
+        else:
+            return False
 
 # Fonction definissant le jeu
 def gameLoop():
