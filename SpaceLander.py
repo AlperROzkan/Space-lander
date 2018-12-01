@@ -52,13 +52,13 @@ def is_over(murs, fusee, tolerance):
             touche_mur = True
         # Verification du point trois
         if ((B[0] - A[0]) * (T[1] - A[1]) - (B[1] - A[1]) * (T[0] - A[0]) > 0 and T[0] >= A[0] and T[0] < B[0]):
-            if(fusee.donne_angle()==90 and A[1]==B[1] and T[1]==A[1] and T[1]==B[1]):
+            if(fusee.donne_angle()==90 and A[1]==B[1]):
                 touche_mur=False
             else :
                 touche_mur = True
         # Verification du point quatre
         if ((B[0] - A[0]) * (Q[1] - A[1]) - (B[1] - A[1]) * (Q[0] - A[0]) > 0 and Q[0] >= A[0] and Q[0] < B[0]):
-            if (fusee.donne_angle() == 90 and A[1]==B[1] and Q[1]==A[1] and Q[1] == B[1]):
+            if (fusee.donne_angle() == 90 and A[1]==B[1]):
                 touche_mur = False
             else:
                 touche_mur = True
@@ -91,13 +91,11 @@ def gagne(murs, fusee, tolerance) :
             and A[1]<=T[1] and T[0]>=A[0] and T[0]<=B[0]\
                 and A[1]<=Q[1] and Q[0]>=A[0] and Q[0]<=B[0]:
             return True
-        else:
-            return False
 
 # Fonction definissant le jeu
 def gameLoop():
     # Musique
-    pygame.mixer_music.play(2,0)
+    pygame.mixer_music.play(1,2.0)
     # Horloge
     clock = pygame.time.Clock()
     font = pygame.font.Font('spacelander.ttf',30)
@@ -200,7 +198,8 @@ def gameLoop():
         ###########################################################################
             #Uncomment if you want autoplay
         ##########################################################################
-        """if (fusee.getX() < (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)-10) or (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)+10):
+        """
+        if (fusee.getX() < (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)-10) or (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)+10):
             if (altitude < windowH/2+100):
                 if (fusee.getAngle() > 90):
                     fusee.rotate(-10)
@@ -214,7 +213,7 @@ def gameLoop():
                     fusee.avancer(counter) #methode qui modifie la position de la fusee
                     fuel -= 0.33 #-10 fuel par sec
 
-           elif (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)):
+            elif (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)):
                 if (fusee.getAngle() < 180):
                     fusee.rotate(10)
                 else:
@@ -250,7 +249,6 @@ def gameLoop():
                     counter+=0.033 #+1 par seconde pcque 30 fps
                 fusee.avancer(counter) #methode qui modifie la position de la fusee
                 fuel -= 0.33 #-10 fuel par sec
-
         """
         ##########################################################################
 
@@ -262,6 +260,7 @@ def gameLoop():
             lastY = fusee.getY()
             speedcalculrefresher = 0
 
+        # Gestion de l'altitude
         altitude = windowH - fusee.getY() #pour le moment par rapport au bas de la fenetre
 
         # Affichage HUD
@@ -271,6 +270,7 @@ def gameLoop():
         hud.setHudAltitude("Altitude : "+str(int(altitude)))
         hud.setHudVertical_speed("Vertical_speed : "+str(int(vertical_speed)))
         hud.setHudHorizontal_speed("Horizontal_speed : "+str(int(horizontal_speed)))
+
 
         if (lastcounter > 0): #si la vitesse d'"inertie" est superieur a 0
             lastcounter -= 0.015 #on la diminue
@@ -289,7 +289,7 @@ def gameLoop():
             win = True
 
         # Gestion de la fin du jeu
-        if (gagne(murs, fusee, 0) and vertical_speed < -20) or time <= 0 or is_over(murs, fusee,17) and not end:
+        if (gagne(murs, fusee, 0) and vertical_speed < -20) or time <= 0 or is_over(murs, fusee,0) and not end:
             fusee.gravity(0)
             gravityacce = 0
             fusee.avancer(0)
@@ -301,7 +301,7 @@ def gameLoop():
         window.fill((0, 0, 0))
 
         # TODO A enlever
-        #pygame.draw.rect(window, white, fusee, 5)
+        pygame.draw.rect(window, white, fusee, 5)
 
         fusee.gravity(gravityacce)
         hud.hudDraw()
@@ -316,6 +316,6 @@ def gameLoop():
         pygame.display.update()
 
 gameLoop()
-pygame.mixer_music.stop()
+
 pygame.quit()
 quit()
