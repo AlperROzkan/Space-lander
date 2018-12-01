@@ -37,11 +37,6 @@ class HUD:
         self.textrestart2 = "Score : "
         self.textrestart3 = "Press R to restart"
 
-
-
-
-
-
     def setHudScore(self, text):
         self.newScore = text
 

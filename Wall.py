@@ -5,7 +5,6 @@ from random import *
 white = (255,255,255)
 blue = (0, 100, 175)
 
-
 # Classe qui décrit un mur a laide de pygame.draw.lines
 class Wall:
     # Constructeur de la classe
@@ -48,7 +47,6 @@ class Wall:
                 self.liste_points.append([largeur_restante,hauteur_mur])
                 self.liste_atterissage.append([largeur_restante,hauteur_mur])
                 self.nb_plateforme = self.nb_plateforme+1
-
         # Retour de la liste
         return self.liste_points
 
