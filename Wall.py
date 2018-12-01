@@ -32,22 +32,27 @@ class Wall:
         hauteur = self.window.get_height()
         largeur = self.window.get_width()
 
-        # Boucle generant les points
-        largeur_restante = 0 # largeur a incrementer au fur et a mesure de l'avancement du terrain
-        self.liste_points = [[0, randint(hauteur/2, hauteur)]] # commencement de la
-        while largeur_restante<largeur :
-            # Generation terrain "normal"
-            largeur_restante = largeur_restante + randint(20,40)# pas
-            hauteur_mur = randint(hauteur/2, hauteur)
-            self.liste_points.append([largeur_restante,hauteur_mur])
+        while  self.nb_plateforme < 2 :
 
-            # Generation terrain plat
-            proba_terrain_plat = randint(0,100)
-            if proba_terrain_plat < 10 or self.nb_plateforme<2:
-                largeur_restante=largeur_restante+self.largeur_atterissage
+            # Boucle generant les points
+            largeur_restante = 0 # largeur a incrementer au fur et a mesure de l'avancement du terrain
+            self.liste_points = [[0, randint(hauteur/2, hauteur)]] # commencement de la
+            self.liste_atterissage = []
+            self.nb_plateforme = 0
+            
+            while largeur_restante<largeur :
+                # Generation terrain "normal"
+                largeur_restante = largeur_restante + randint(20,40)# pas
+                hauteur_mur = randint(hauteur/2, hauteur)
                 self.liste_points.append([largeur_restante,hauteur_mur])
-                self.liste_atterissage.append([largeur_restante,hauteur_mur])
-                self.nb_plateforme = self.nb_plateforme+1
+
+                # Generation terrain plat
+                proba_terrain_plat = randint(0,100)
+                if proba_terrain_plat < 2 and self.nb_plateforme < 3:
+                    largeur_restante=largeur_restante+self.largeur_atterissage
+                    self.liste_points.append([largeur_restante,hauteur_mur])
+                    self.liste_atterissage.append([largeur_restante,hauteur_mur])
+                    self.nb_plateforme = self.nb_plateforme+1
 
         # Retour de la liste
         return self.liste_points
