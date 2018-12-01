@@ -167,7 +167,7 @@ def gameLoop():
             vertical_speed = 0
             horizontal_speed = 0
             # Generation des murs
-            liste_points = murs.genere_points(5)
+            liste_points = murs.genere_points([20, 40])
         if keys[pygame.K_r] and end:
             fusee = Fusee((100, 100), "fusee.png", (60, 40))
             murs = Wall(window)
