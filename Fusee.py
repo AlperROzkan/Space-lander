@@ -15,6 +15,8 @@ class Fusee(pygame.sprite.Sprite):
         self.angle = 0
 
     def rotate(self, angle):
+        if self.angle == 360 or self.angle == -360:
+            self.angle = 0
         self.angle += angle
         self.image = pygame.transform.rotate(self.orig_image, self.angle)
         self.rect = self.image.get_rect(center=self.pos)
@@ -42,7 +44,7 @@ class Fusee(pygame.sprite.Sprite):
         return self.pos.x
 
     def getY(self):
-        return self.pos.y  
+        return self.pos.y
 
     # Donne le point en haut a gauche
     # EXEMPLE : fusee.donne_point_origine()[0] pour x, fusee.donne_point_origine()[1] pour y

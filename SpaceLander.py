@@ -86,7 +86,8 @@ def gagne(murs, fusee, tolerance) :
         # Deux points du sol se suivant
         A = [liste_points[i][0], liste_points[i][1]]
         B = [liste_points[i + 1][0], liste_points[i + 1][1]]
-        if fusee.angle == 90 and A[1]==B[1] and T[1]==Q[1] \
+        print(fusee.getAngle())
+        if (fusee.getAngle() == 90 or fusee.getAngle() == -270) and A[1]==B[1] and T[1]==Q[1] \
             and A[1]<=T[1] and T[0]>=A[0] and T[0]<=B[0]\
                 and A[1]<=Q[1] and Q[0]>=A[0] and Q[0]<=B[0]:
             return True
@@ -126,6 +127,7 @@ def gameLoop():
 
     # Boucle principale
     while not game_over:
+
         # Gestion des evenements
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
