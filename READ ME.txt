@@ -1,0 +1,2 @@
+Pour activer l'auto play il suffit d'appuyer sur la touche "o"
+Pour désactiver l'auto play il suffit d'appuyer sur la touche "p" 
