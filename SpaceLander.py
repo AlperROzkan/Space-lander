@@ -197,7 +197,7 @@ def gameLoop():
 
 
         ###########################################################################
-            #Uncomment if you want autoplay
+            #Auto play
         ##########################################################################
         if(auto):
             if (fusee.getX() < (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)-10) or (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)+10):
