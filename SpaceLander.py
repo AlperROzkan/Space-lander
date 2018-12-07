@@ -66,7 +66,6 @@ def is_over(murs, fusee, tolerance):
                 touche_mur = True
 
         # Verification entre les intervalles
-        # U - Q
         if(A[1]<Q[1] and A[1]>U[1]) :
             if(A[0]<T[0] and A[0]>Q[0]):
                 touche_mur = True
@@ -94,7 +93,7 @@ def gagne(murs, fusee, tolerance) :
 # Fonction definissant le jeu
 def gameLoop():
     # Musique
-    pygame.mixer_music.play(2,0)
+    pygame.mixer_music.play(-1,0)
     # Horloge
     clock = pygame.time.Clock()
     font = pygame.font.Font('spacelander.ttf',30)
@@ -302,8 +301,8 @@ def gameLoop():
 
         window.fill((0, 0, 0))
 
-        # TODO A enlever
-        #pygame.draw.rect(window, white, fusee, 5)
+        # A enlever si l'on ne veut pas du rectangle entourant la fusée
+        pygame.draw.rect(window, white, fusee, 5)
 
         fusee.gravity(gravityacce)
         hud.hudDraw()
