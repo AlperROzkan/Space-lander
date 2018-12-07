@@ -306,12 +306,13 @@ def gameLoop():
 
         fusee.gravity(gravityacce)
         hud.hudDraw()
+        murs.draw_wall(liste_points)
         if win:
             hud.DrawNextlvl(windowW/2, windowH/2)
         if end:
             hud.DrawRestart(windowW/2, windowH/2, str(int(score)))
         all_sprites.draw(window)
-        murs.draw_wall(liste_points)
+
         pygame.display.flip()
         clock.tick(30)
         pygame.display.update()
