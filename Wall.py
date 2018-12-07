@@ -10,10 +10,6 @@ blue = (0, 100, 175)
 class Wall:
     # Constructeur de la classe
     # window : ecran de jeu
-    # liste_sols : les sols en tant que rectangles
-    # liste_points : les points dans une liste
-    # liste_atterissage : les deuxiemes points des pistes d'atterissages
-    #
     def __init__(self, window):
         self.window = window
         self.liste_sols = []

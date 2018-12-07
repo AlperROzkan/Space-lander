@@ -52,6 +52,7 @@ def is_over(murs, fusee, tolerance):
             touche_mur = True
         # Verification du point trois
         if ((B[0] - A[0]) * (T[1] - A[1]) - (B[1] - A[1]) * (T[0] - A[0]) > 0 and T[0] >= A[0] and T[0] < B[0]):
+            # Conditions en plus pour permettre a la fusée de gagner
             if(fusee.donne_angle()==90 and A[1]==B[1] and T[1]==A[1] and T[1]==B[1] and T[0]>=A[0] and T[0]+10==B[0]\
                     and Q[1]==A[1] and Q[1] == B[1] and Q[0]-10>=A[0] and Q[0]<=B[0]):
                 touche_mur=False
@@ -59,6 +60,7 @@ def is_over(murs, fusee, tolerance):
                 touche_mur = True
         # Verification du point quatre
         if ((B[0] - A[0]) * (Q[1] - A[1]) - (B[1] - A[1]) * (Q[0] - A[0]) > 0 and Q[0] >= A[0] and Q[0] < B[0]):
+            # Conditions en plus pour permettre a la fusée de gagner
             if (fusee.donne_angle() == 90 and A[1]==B[1] and Q[1]==A[1] and Q[1] == B[1] and Q[0]-10>=A[0] and Q[0]<=B[0] \
                     and T[1] == A[1] and T[1] == B[1] and T[0] >= A[0] and T[0] + 10 == B[0]):
                 touche_mur = False
@@ -302,7 +304,7 @@ def gameLoop():
         window.fill((0, 0, 0))
 
         # A enlever si l'on ne veut pas du rectangle entourant la fusée
-        pygame.draw.rect(window, white, fusee, 5)
+        # pygame.draw.rect(window, white, fusee, 5)
 
         fusee.gravity(gravityacce)
         hud.hudDraw()
