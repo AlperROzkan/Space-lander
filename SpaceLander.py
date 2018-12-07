@@ -199,57 +199,58 @@ def gameLoop():
         ###########################################################################
             #Auto play
         ##########################################################################
-        if(auto):
-            if (fusee.getX() < (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)-10) or (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)+10):
-                if (altitude < windowH/2+100):
+        if fuel > 0 and not end and not win:
+            if(auto):
+                if (fusee.getX() < (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)-10) or (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)+10):
+                    if (altitude < windowH/2+100):
+                        if (fusee.getAngle() > 90):
+                            fusee.rotate(-10)
+                        if (fusee.getAngle() < 90):
+                            fusee.rotate(10)
+                        if (vertical_speed < 10):
+                            if (gravityacce > 0.5): #la gravite ne peut pas etre inferieur à o,5
+                                gravityacce -= 0.06 #la gravite de 0.06 par tick (~30 ticks par seconde)
+                            if (counter < 2):#la vitesse ne peut pas être > 2
+                                counter+=0.033 #+1 par seconde pcque 30 fps
+                            fusee.avancer(counter) #methode qui modifie la position de la fusee
+                            fuel -= 0.33 #-10 fuel par sec
+
+                    elif (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)):
+                        if (fusee.getAngle() < 180):
+                            fusee.rotate(10)
+                        else:
+                            if (gravityacce > 0.5): #la gravite ne peut pas etre inferieur à o,5
+                                gravityacce -= 0.06 #la gravite de 0.06 par tick (~30 ticks par seconde)
+                            if (counter < 2):#la vitesse ne peut pas être > 2
+                                counter+=0.033 #+1 par seconde pcque 30 fps
+                            fusee.avancer(counter) #methode qui modifie la position de la fusee
+                            fuel -= 0.33 #-10 fuel par sec
+
+                    else:
+                        if (fusee.getAngle() > 0):
+
+                            fusee.rotate(-10)
+                        else:
+                            if (gravityacce > 0.5): #la gravite ne peut pas etre inferieur à o,5
+                                gravityacce -= 0.06 #la gravite de 0.06 par tick (~30 ticks par seconde)
+                            if (counter < 2):#la vitesse ne peut pas être > 2
+                                counter+=0.033 #+1 par seconde pcque 30 fps
+                            fusee.avancer(counter) #methode qui modifie la position de la fusee
+                            fuel -= 0.33 #-10 fuel par sec
+
+
+                else:
                     if (fusee.getAngle() > 90):
                         fusee.rotate(-10)
                     if (fusee.getAngle() < 90):
                         fusee.rotate(10)
-                    if (vertical_speed < 10):
+                    if vertical_speed < -16 and (murs.liste_atterissage[0][1] - fusee.getY()) < vertical_speed*-5:
                         if (gravityacce > 0.5): #la gravite ne peut pas etre inferieur à o,5
                             gravityacce -= 0.06 #la gravite de 0.06 par tick (~30 ticks par seconde)
                         if (counter < 2):#la vitesse ne peut pas être > 2
                             counter+=0.033 #+1 par seconde pcque 30 fps
                         fusee.avancer(counter) #methode qui modifie la position de la fusee
                         fuel -= 0.33 #-10 fuel par sec
-
-                elif (fusee.getX() > (murs.liste_atterissage[0][0]-murs.largeur_atterissage/2)):
-                    if (fusee.getAngle() < 180):
-                        fusee.rotate(10)
-                    else:
-                        if (gravityacce > 0.5): #la gravite ne peut pas etre inferieur à o,5
-                            gravityacce -= 0.06 #la gravite de 0.06 par tick (~30 ticks par seconde)
-                        if (counter < 2):#la vitesse ne peut pas être > 2
-                            counter+=0.033 #+1 par seconde pcque 30 fps
-                        fusee.avancer(counter) #methode qui modifie la position de la fusee
-                        fuel -= 0.33 #-10 fuel par sec
-
-                else:
-                    if (fusee.getAngle() > 0):
-
-                        fusee.rotate(-10)
-                    else:
-                        if (gravityacce > 0.5): #la gravite ne peut pas etre inferieur à o,5
-                            gravityacce -= 0.06 #la gravite de 0.06 par tick (~30 ticks par seconde)
-                        if (counter < 2):#la vitesse ne peut pas être > 2
-                            counter+=0.033 #+1 par seconde pcque 30 fps
-                        fusee.avancer(counter) #methode qui modifie la position de la fusee
-                        fuel -= 0.33 #-10 fuel par sec
-
-
-            else:
-                if (fusee.getAngle() > 90):
-                    fusee.rotate(-10)
-                if (fusee.getAngle() < 90):
-                    fusee.rotate(10)
-                if vertical_speed < -16 and (murs.liste_atterissage[0][1] - fusee.getY()) < vertical_speed*-5:
-                    if (gravityacce > 0.5): #la gravite ne peut pas etre inferieur à o,5
-                        gravityacce -= 0.06 #la gravite de 0.06 par tick (~30 ticks par seconde)
-                    if (counter < 2):#la vitesse ne peut pas être > 2
-                        counter+=0.033 #+1 par seconde pcque 30 fps
-                    fusee.avancer(counter) #methode qui modifie la position de la fusee
-                    fuel -= 0.33 #-10 fuel par sec
 
         ##########################################################################
 
